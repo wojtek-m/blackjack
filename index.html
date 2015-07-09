@@ -1,0 +1,105 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+        <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+
+    </head>
+    <body>
+
+    <div class="container-fluid" >
+      <div class="row">
+      <!-- Blackjack table -->
+      
+
+      
+      <div class="col-xs-12 col-md-8 title">
+          <div id="mute">Mute Sounds</div>
+      </div>
+      <div class="col-xs-12 col-md-4 score">
+        <h2>BlackJack</h2>
+        <h3>Your chips: <span id="score">2000</span></h3>
+      </div>
+      
+      <div class="container board">
+        <div class="col-xs-12">
+          <p class="hand-label">Dealer's hand:</p>
+          <div id="dealerHand" class="hand"><img src="img/XX.jpg"><img src="img/XX.jpg"></div>
+        </div>
+
+        <div id="outcome" class="col-xs-12">Click the Deal button to begin!</div>
+        <div class="buttons col-xs-12">
+            <button type="button" class="btn btn-success btn-lg" id="deal">Deal</button>
+            <button type="button" class="btn btn-primary btn-lg" id="hit">Hit</button>
+            <button type="button" class="btn btn-info btn-lg" id="stand">Stand</button>
+            <button type="button" class="btn btn-warning btn-lg" id="rules">Rules</button>
+        </div>
+        
+        <div class="col-xs-12">
+          <p class="hand-label">Player's hand: </p>
+          <div id="playerHand" class="hand"><img src="img/XX.jpg"><img src="img/XX.jpg"></div>
+        </div>
+        <div class="col-xs-12">
+          <!-- <p class="value-label">Player's hand value: <span id="playerHandValue">0</span></p> -->
+        </div>
+
+
+      </div>
+      <div id="rulesList">
+          <h3>Rules:</h3>
+          <p>(click on the rules window to close it)<p>
+          <ol>
+          <li>Aces may be counted as 1 or 11 points. J, Q and K count as 10 points.</li> 
+           <li>The value of a hand is the sum of the point values of the individual cards.</li>   
+           <li>The player whos hand value go over 21 points busts and looses.</li>
+           <li>If no one busts, the higher value hand wins.</li>
+           <li>Dealer wins all the draws.</li>
+           <li>Result of any hand can be overturn by the member of the Omerta family.</li>
+           <li>You can take one more card by Hitting or go to showdown by Standing.</li>
+           <li>You start with 2000 chips. Each round you win 95 or loose 100 chips.</li>
+           <li>If your chip count is negative it means you are in debt to the Omertas...</li>
+           <li>Never get in debt to the Omertas!</li>
+          </ol>
+          
+      </div>
+
+      <footer>
+        <p>Developed by <a href="http://wojtekmurawski.me">Wojtek Murawski</a> | Deck by <a href="http://www.nexusmods.com/newvegas/mods/35896/?">SiberianExpress</a> | Logo graphic by <a href="https://www.facebook.com/MsNewVegas">MissNewVegas</a> </p>
+
+        <p>Theme from <a href="http://fallout.bethsoft.com">Fallout New Vegas</a> | Sounds by <a href="https://www.freesound.org/people/joedeshon/sounds/118855/">Joe DeShon</a>, <a href="http://freesound.org/people/monotraum/sounds/162192/">monotraum</a> and <a href="https://www.freesound.org/people/Kastenfrosch/sounds/113988/">Kastenfrosch</a></p>
+
+
+      </footer>
+
+      </div>
+    </div> <!-- /container -->  
+
+
+    </body>  
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <script>
+       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+       e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+       e.src='//www.google-analytics.com/analytics.js';
+       r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+       ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+    </script>
+    <script src="js/game.js"></script>
+</html>
