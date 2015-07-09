@@ -13,10 +13,10 @@ $('#rulesList').on('click', function() { $('#rulesList').toggle()});
 $('#mute').on('click', function() {
     if (mute) { 
         mute = false;  
-        $('#mute').html("Mute Sounds"); 
+        $('#mute').html("<button type=\"button\" class=\"mute btn btn-default btn-sm\">Mute Sounds</button>"); 
     } else { 
         mute = true;
-        $('#mute').html("Play Sounds");
+        $('#mute').html("<button type=\"button\" class=\"mute btn btn-default btn-sm\">Play Sounds</button>");
     }
     Mute();
 });
@@ -43,12 +43,7 @@ var lose = new Audio("./sounds/113988__kastenfrosch__verloren.mp3");
 var mute = false;
 Mute();
 
-// loop the ambience casino sound
-ambience.addEventListener('ended', function () {
-        this.currentTime = 0;
-        this.play();
-}, false);
-ambience.play();
+
 
 /**
  * Card object - stores the the suit and value of the card.
@@ -178,9 +173,9 @@ function Game() {
         // player is not allowed to deal new cards in hand
         if (this.in_play) {
             this.outcome = "You have forfeited your hand.";
-            lose.play();
             this.score -= 100;
             this.in_play = false;
+            lose.play();
         } else {
             this.outcome = " ";
         }
@@ -239,6 +234,7 @@ function Game() {
                 this.outcome = "Dealer have busted (" + this.dealer_hand.getValue() + "), you win (" + this.player_hand.getValue() + ")! New Deal?";
                 this.score += 95;
                 win.play();
+                Mute();
             // else if dealer did not bust
             } else {
                 // if dealers hand is equal or higher to players hand, dealer wins
@@ -284,15 +280,22 @@ function shuffleArray(array) {
     return array;
 }
 
-/** Mute the game sounds */
+/** Turn on/off the game sounds */
 function Mute() {
     if (mute) {
         ambience.volume = .0;
         win.volume = .0;
         lose.volume = .0;
     } else {
-        ambience.volume = .2;
-        win.volume = .7;
+        ambience.volume = .5;
+        win.volume = .8;
         lose.volume = .3;
+
+        // loop the ambience casino sound
+        ambience.addEventListener('ended', function () {
+            this.currentTime = 0;
+            this.play();
+        }, false);
+        ambience.play();
     }
 }

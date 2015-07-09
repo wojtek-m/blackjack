@@ -39,10 +39,9 @@ img {
 
 #mute {
     text-align: right;
-    color: white;
-    font-size: 1.35em;
     padding: 3%;
 }
+
 
 #outcome {
     min-height: 20px;
@@ -57,9 +56,6 @@ img {
 }
 
 #rulesList {
-    width: 500px;
-    height: 85%;
-    background-color: rgba(38, 29, 17, .9);
     position: absolute;
     top:0;
     bottom: 0;
@@ -67,8 +63,6 @@ img {
     right: 0;
     padding: 3%;
     margin: auto;
-
-    font-size: 1.25em;
 
     display: none;
 }
@@ -83,9 +77,6 @@ img {
     text-align: center;
     font-size: 1.1em;
     margin-top: 2%;
-}
-
-.board {      
 }
 
 
@@ -110,19 +101,78 @@ img {
 
 .title {
     min-height: 120px;
+    max-height: 120px;
     background-color: #FADD98;
     background-image: url("../img/gomorrah-logo-long.jpg");
+    background-position: left;
     text-align: left;
-    padding-left: -2%;
     color: #241603;
     font-weight: bolder;
 }
 
-.value-label {
-    font-size: 1.25em;
-    text-align: center;
-    margin-bottom: 2%;
+@media all and (min-width: 501px) { 
+    
+    .hand {
+        font-size: 4em;
+        font-weight: bolder;
+        text-align: center;
+        min-height: 260px;
+    }
+    
+    .rules {
+        background-color: rgba(38, 29, 17, .9);
+        width: 500px;
+        height: 85%;
+        font-size: 1.25em;
+    }
+
+
+
+} 
+
+@media all and (max-width: 500px) {
+    
+    footer {
+        font-size: 0.75em;
+    }
+
+    #mute {
+        text-align: center;
+        padding-top: 5%;
+    }
+
+    .hand {
+        font-size: 2em;
+        font-weight: bolder;
+        text-align: center;
+        min-height: 160px;
+    }
+
+    .hand img {
+        resize: both;
+        height: 150px;
+        width: 75px;
+    }
+
+    .score h2 {
+        font-size: 1.75em;
+        font-weight: bolder;
+    }
+
+    .rules {
+        background-color: rgb(38, 29, 17);
+        width: 300px;
+        height: 100%;
+        font-size: 1em;
+        top: 0;
+    }
+
+    .title {
+        margin-left: 0px;
+        width: 100%;
+    }
 }
+
 
 
 
