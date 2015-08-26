@@ -23,9 +23,9 @@
     <div class="container-fluid" >
       <div class="row">
       <!-- Blackjack table -->
-      
 
-      
+
+
       <div id="mute" class="col-xs-12 col-md-8 title">
           <button type="button" class="mute btn btn-default btn-sm">Mute Sounds</button>
       </div>
@@ -33,7 +33,7 @@
         <h2>BlackJack</h2>
         <h3>Your chips: <span id="score">2000</span></h3>
       </div>
-      
+
       <div class="container board">
         <div class="col-xs-12">
           <p class="hand-label">Dealer's hand:</p>
@@ -45,9 +45,10 @@
             <button type="button" class="btn btn-success btn-lg" id="deal">Deal</button>
             <button type="button" class="btn btn-primary btn-lg" id="hit">Hit</button>
             <button type="button" class="btn btn-info btn-lg" id="stand">Stand</button>
+            <button type="button" class="btn btn-danger btn-lg" id="split">Split</button>
             <button type="button" class="btn btn-warning btn-lg" id="rules">Rules</button>
         </div>
-        
+
         <div class="col-xs-12">
           <p class="hand-label">Player's hand: </p>
           <div id="playerHand" class="hand"><img src="img/XX.jpg"><img src="img/XX.jpg"></div>
@@ -62,8 +63,8 @@
           <h3>Rules:</h3>
           <p>(click on the rules window to close it)<p>
           <ol>
-          <li>Aces may be counted as 1 or 11 points. J, Q and K count as 10 points.</li> 
-           <li>The value of a hand is the sum of the point values of the individual cards.</li>   
+          <li>Aces may be counted as 1 or 11 points. J, Q and K count as 10 points.</li>
+           <li>The value of a hand is the sum of the point values of the individual cards.</li>
            <li>The player whos hand value go over 21 points busts and looses.</li>
            <li>If no one busts, the higher value hand wins.</li>
            <li>Dealer wins all the draws.</li>
@@ -73,7 +74,7 @@
            <li>If your chip count is negative it means you are in debt to the Omertas...</li>
            <li>Never get in debt to the Omertas!</li>
           </ol>
-          
+
       </div>
 
       <footer>
@@ -85,10 +86,10 @@
       </footer>
 
       </div>
-    </div> <!-- /container -->  
+    </div> <!-- /container -->
 
 
-    </body>  
+    </body>
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script src="js/vendor/bootstrap.min.js"></script>
