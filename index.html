@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
+        <title>Gomorrah Blackjack</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -23,9 +23,6 @@
     <div class="container-fluid" >
       <div class="row">
       <!-- Blackjack table -->
-
-
-
       <div id="mute" class="col-xs-12 col-md-8 title">
           <button type="button" class="mute btn btn-default btn-sm">Mute Sounds</button>
       </div>
@@ -33,26 +30,30 @@
         <h2>BlackJack</h2>
         <h3>Your chips: <span id="score">2000</span></h3>
       </div>
-
       <div class="container board">
+        <!-- Dealer's hand -->
         <div class="col-xs-12">
           <p class="hand-label">Dealer's hand:</p>
           <div id="dealerHand" class="hand"><img src="img/XX.jpg"><img src="img/XX.jpg"></div>
         </div>
-
-        <div id="outcome" class="col-xs-12">Click the Deal button to begin!</div>
+        <!-- Text feedback for the user -->
+        <div id="outcome" class="col-xs-9 feedback outcome">Click the Deal button to begin!</div>
+        <div class="col-xs-3 bet outcome">Current bet: <span id="currentBet"> no bet </span></div>
+        <!-- Buttons -->
         <div class="buttons col-xs-12">
             <button type="button" class="btn btn-success btn-lg" id="deal">Deal</button>
             <button type="button" class="btn btn-primary btn-lg" id="hit">Hit</button>
             <button type="button" class="btn btn-info btn-lg" id="stand">Stand</button>
-            <button type="button" class="btn btn-danger btn-lg" id="split">Split</button>
+            <button type="button" class="btn btn-danger btn-lg hide" id="splitHand">Split</button>
+            <button type="button" class="btn btn-double btn-lg" id="double">Double</button>
             <button type="button" class="btn btn-warning btn-lg" id="rules">Rules</button>
         </div>
-
+        <!-- Main hand display -->
         <div id="playerHandWrap" class="col-xs-12">
           <p class="hand-label">Player's hand: </p>
           <div id="playerHand" class="hand"><img src="img/XX.jpg"><img src="img/XX.jpg"></div>
         </div>
+        <!-- Split hand display -->
         <div id="splitWrapOne" class="col-xs-6 hide-hand">
           <div class="buttons col-xs-12">
               <button type="button" class="btn btn-primary btn-lg" id="hitSplitOne">Hit</button>
@@ -67,9 +68,8 @@
           <p class="hand-label">Split hand two: </p>
           <div id="splitHandTwo" class="hand"><img src="img/XX.jpg"><img src="img/XX.jpg"></div>
         </div>
-
-
       </div>
+      <!-- Rules -->
       <div id="rulesList" class="rules">
           <h3>Rules:</h3>
           <p>(click on the rules window to close it)<p>
@@ -85,7 +85,6 @@
            <li>If your chip count is negative it means you are in debt to the Omertas...</li>
            <li>Never get in debt to the Omertas!</li>
           </ol>
-
       </div>
 
       <footer>

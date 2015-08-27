@@ -8,6 +8,9 @@
 $('#deal').on('click', function() {
   blackjack.deal()
 });
+$('#double').on('click', function() {
+  blackjack.doubleBet()
+});
 $('#hit').on('click', function() {
   blackjack.hit('playerHand')
 });
@@ -20,7 +23,7 @@ $('#hitSplitTwo').on('click', function() {
 $('#stand').on('click', function() {
   blackjack.stand()
 });
-$('#split').on('click', function() {
+$('#splitHand').on('click', function() {
   blackjack.splitHand()
 });
 $('#rules').on('click', function() {
@@ -63,6 +66,7 @@ var VALUES = {
 var blackjack = new Game();
 
 // select view elements
+var currentBetLabel = document.getElementById('currentBet');
 var playerHandLabel = document.getElementById('playerHand');
 var dealerHandLabel = document.getElementById('dealerHand');
 var outcomeLabel = document.getElementById('outcome');
@@ -225,12 +229,15 @@ function Game() {
   this.playingDeck = [];
   this.playerHand = [];
   this.dealerHand = [];
+  this.bet = 100;
+  this.RAKE = 0.05;
 };
 
 Game.prototype.deal = function() {
   $('#playerHandWrap').removeClass('hide-hand');
   $('#hit').removeClass('hide');
-  $('#split').css('visibility', 'hidden');
+  $('#double').removeClass('hide');
+  $('#splitHand').addClass('hide');
   $('#splitWrapOne').addClass('hide-hand');
   $('#splitWrapTwo').addClass('hide-hand');
   // player is not allowed to deal new cards in hand
@@ -252,6 +259,7 @@ Game.prototype.deal = function() {
   this.splitHandOne = new Hand();
   this.splitHandTwo = new Hand();
   this.playingDeck.shuffleDeck();
+  this.bet = 100;
 
   // deal the first 2 cards for player and dealer
   var rounds_dealt = 0;
@@ -269,12 +277,19 @@ Game.prototype.deal = function() {
     this.outcome = "Do you Hit or Stand?";
     // check if the hand is a pair and allow split
     if (this.playerHand.pairCheck()) {
-      $('#split').css('visibility', 'visible');
+      $('#splitHand').removeClass('hide');
       this.outcome = "Do you Hit, Split or Stand?";
     }
   }
   this.updateView();
 }
+
+Game.prototype.doubleBet = function () {
+  this.bet *= 2;
+  $('#double').addClass('hide');
+  $('#splitHand').addClass('hide');
+  this.updateView();
+};
 
 Game.prototype.hit = function(hand) {
   var handMap = { playerHand:this.playerHand,
@@ -287,12 +302,13 @@ Game.prototype.hit = function(hand) {
     if (handMap[hand].getValue() > 21 && !this.handIsSplit) {
       this.outcome = "You have busted (" + handMap[hand].getValue() + "), dealer wins. New Deal?";
       this.inPlay = false;
-      this.score -= 100;
+      this.score -= this.bet;
       lose.play();
     } else {
       this.outcome = "New card dealt. Do you Hit or Stand?";
     }
   }
+  $('#double').addClass('hide');
   this.updateView();
 }
 
@@ -306,7 +322,7 @@ Game.prototype.stand = function() {
     // if dealers hand value is over 21, dealer busts
     if (this.dealerHand.getValue() > 21) {
       this.outcome = "Dealer have busted (" + this.dealerHand.getValue() + "), you win! New Deal?";
-      this.score += 95;
+      this.score += this.rakeBet(this.bet);
       win.play();
       Mute();
     // else if dealer did not bust and hand is split
@@ -322,15 +338,15 @@ Game.prototype.stand = function() {
       // Set the user feedback accordingly to results
       if (won === 2) {
         this.outcome = "Dealer (" + this.dealerHand.getValue() + ") looses with both your hands (" + this.splitHandOne.getValue() + ", " + this.splitHandTwo.getValue() + "). New Deal?";
-        this.score += 85;
+        this.score += this.rakeBet(this.bet);
         win.play();
       } else if (won === 1) {
         this.outcome = "Dealer (" + this.dealerHand.getValue() + ") looses with one of your hands (" + this.splitHandOne.getValue() + ", " + this.splitHandTwo.getValue() + "). New Deal?";
-        this.score -= 60;
+        this.score += (this.rakeBet(this.bet))/2;
         win.play();
       } else {
         this.outcome = "Dealer (" + this.dealerHand.getValue() + ") wins with both your hands (" + this.splitHandOne.getValue() + ", " + this.splitHandTwo.getValue() + "). New Deal?";
-        this.score -= 120;
+        this.score -= this.bet;
         lose.play();
       }
     // else if dealer did not bust and hand is NOT split
@@ -338,12 +354,12 @@ Game.prototype.stand = function() {
       // if dealers hand is equal or higher to players hand, dealer wins
       if (this.dealerHand.getValue() >= this.playerHand.getValue()) {
         this.outcome = "Dealer (" + this.dealerHand.getValue() + ") wins with your hand (" + this.playerHand.getValue() + "). New Deal?";
-        this.score -= 100;
+        this.score -= this.bet;
         lose.play();
         // else the player wins
       } else {
         this.outcome = "You (" + this.playerHand.getValue() + ") win with dealer's hand (" + this.dealerHand.getValue() + ")! New Deal?";
-        this.score += 95;
+        this.score += this.rakeBet(this.bet);
         win.play();
       }
     }
@@ -353,11 +369,23 @@ Game.prototype.stand = function() {
   }
 }
 
+/*
+  * Rake the bets, return value of the bet after deducting rake.
+*/
+Game.prototype.rakeBet = function (bet) {
+  return bet - (this.RAKE * bet);
+};
+
+/*
+  * Split user hand
+*/
 Game.prototype.splitHand = function () {
-  $('#split').css('visibility', 'hidden');
+  $('#splitHand').addClass('hide');
+  $('#double').addClass('hide');
   console.log('dupa');
 
   this.handIsSplit = true;
+  this.bet *= 2;
   // Create Hand no 1
   this.splitHandOne.addCard(this.playerHand.popCard());
   this.splitHandOne.addCard(this.playingDeck.dealCard());
@@ -384,6 +412,7 @@ Game.prototype.updateView = function() {
   }
   outcomeLabel.innerHTML = this.outcome;
   scoreLabel.innerHTML = this.score;
+  currentBetLabel.innerHTML = this.bet;
 }
 
 /**
