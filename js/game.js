@@ -9,7 +9,9 @@ $('#deal').on('click', function() {
   blackjack.deal()
 });
 $('#double').on('click', function() {
-  blackjack.doubleBet()
+  blackjack.doubleBet();
+  blackjack.hit('playerHand');
+  blackjack.stand();
 });
 $('#hit').on('click', function() {
   blackjack.hit('playerHand')
@@ -79,7 +81,7 @@ var ambience = new Audio("./sounds/118855__joedeshon__casino-ambiance-03.mp3");
 var win = new Audio("./sounds/162192__monotraum__coins.mp3");
 var lose = new Audio("./sounds/113988__kastenfrosch__verloren.mp3");
 
-var mute = true;
+var mute = false;
 Mute();
 
 
@@ -152,7 +154,7 @@ Hand.prototype.printHand = function() {
   var hand_printout = "";
   if (this.hand.length > 3) {
     for (var i = 0; i < this.hand.length; i++) {
-      hand_printout = hand_printout + "<img style=\"margin-left:-100px; z-index=500" + i + "\" src=\"img/" + this.hand[i].rank + this.hand[i].suit + ".jpg\">";
+      hand_printout = hand_printout + "<img style=\"margin-left:-55px;" + i + "\" src=\"img/" + this.hand[i].rank + this.hand[i].suit + ".jpg\">";
     }
   } else {
     for (var i = 0; i < this.hand.length; i++) {
@@ -166,9 +168,9 @@ Hand.prototype.printDealerHand = function() {
   var hand_printout = "";
   if (this.hand.length > 4) {
     for (var i = 0; i < this.hand.length - 1; i++) {
-      hand_printout = hand_printout + "<img style=\"margin-left:-100px; z-index=500" + i + "\" src=\"img/XX.jpg\">";
+      hand_printout = hand_printout + "<img style=\"margin-left:-55px;" + i + "\" src=\"img/XX.jpg\">";
     }
-    hand_printout = hand_printout + "<img style=\"margin-left:-100px; z-index=500" + i + "\" src=\"img/" + this.hand[this.hand.length - 1].rank + this.hand[this.hand.length - 1].suit + ".jpg\">";
+    hand_printout = hand_printout + "<img style=\"margin-left:-55px;" + i + "\" src=\"img/" + this.hand[this.hand.length - 1].rank + this.hand[this.hand.length - 1].suit + ".jpg\">";
   } else {
     for (var i = 0; i < this.hand.length - 1; i++) {
       hand_printout = hand_printout + "<img src=\"img/XX.jpg\">";
@@ -236,6 +238,7 @@ function Game() {
 Game.prototype.deal = function() {
   $('#playerHandWrap').removeClass('hide-hand');
   $('#hit').removeClass('hide');
+  $('#stand').removeClass('hide');
   $('#double').removeClass('hide');
   $('#splitHand').addClass('hide');
   $('#splitWrapOne').addClass('hide-hand');
@@ -272,6 +275,10 @@ Game.prototype.deal = function() {
   if (this.dealerHand.getValue() === 21) {
     this.outcome = "The dealer hits BlackJack, dealer wins. New Deal?";
     this.inPlay = false;
+    $('#double').addClass('hide');
+    $('#splitHand').addClass('hide');
+    $('#hit').addClass('hide');
+    $('#stand').addClass('hide');
     lose.play();
   } else {
     this.outcome = "Do you Hit or Stand?";
@@ -288,6 +295,8 @@ Game.prototype.doubleBet = function () {
   this.bet *= 2;
   $('#double').addClass('hide');
   $('#splitHand').addClass('hide');
+  $('#hit').addClass('hide');
+  $('#stand').addClass('hide');
   this.updateView();
 };
 
@@ -303,6 +312,8 @@ Game.prototype.hit = function(hand) {
       this.outcome = "You have busted (" + handMap[hand].getValue() + "), dealer wins. New Deal?";
       this.inPlay = false;
       this.score -= this.bet;
+      $('#hit').addClass('hide');
+      $('#stand').addClass('hide');
       lose.play();
     } else {
       this.outcome = "New card dealt. Do you Hit or Stand?";
@@ -364,6 +375,9 @@ Game.prototype.stand = function() {
       }
     }
     this.inPlay = false;
+    $('#double').addClass('hide');
+    $('#hit').addClass('hide');
+    $('#stand').addClass('hide');
     this.updateView();
 
   }

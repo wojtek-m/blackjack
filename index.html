@@ -37,15 +37,15 @@
           <div id="dealerHand" class="hand"><img src="img/XX.jpg"><img src="img/XX.jpg"></div>
         </div>
         <!-- Text feedback for the user -->
-        <div id="outcome" class="col-xs-9 feedback outcome">Click the Deal button to begin!</div>
-        <div class="col-xs-3 bet outcome">Current bet: <span id="currentBet"> no bet </span></div>
+        <div id="outcome" class="col-xs-12 col-md-9 feedback outcome">Click the Deal button to begin!</div>
+        <div class="col-xs-12 col-md-3 bet outcome">Current bet: <span id="currentBet"> no bet </span></div>
         <!-- Buttons -->
         <div class="buttons col-xs-12">
+            <button type="button" class="btn btn-double btn-lg hide" id="double">Double</button>
+            <button type="button" class="btn btn-danger btn-lg hide" id="splitHand">Split</button>
             <button type="button" class="btn btn-success btn-lg" id="deal">Deal</button>
             <button type="button" class="btn btn-primary btn-lg" id="hit">Hit</button>
             <button type="button" class="btn btn-info btn-lg" id="stand">Stand</button>
-            <button type="button" class="btn btn-danger btn-lg hide" id="splitHand">Split</button>
-            <button type="button" class="btn btn-double btn-lg" id="double">Double</button>
             <button type="button" class="btn btn-warning btn-lg" id="rules">Rules</button>
         </div>
         <!-- Main hand display -->
@@ -79,9 +79,11 @@
            <li>The player whos hand value go over 21 points busts and looses.</li>
            <li>If no one busts, the higher value hand wins.</li>
            <li>Dealer wins all the draws.</li>
+           <li>You can <strong>double the bet</strong> on any starting hand, but you will be forced to stand after hitting one more card.</li>
+           <li>You can <strong>split any paired hand</strong>, you then play two separate hands with a bet on each (total double bet).</li>
            <li>Result of any hand can be overturn by the member of the Omerta family.</li>
            <li>You can take one more card by Hitting or go to showdown by Standing.</li>
-           <li>You start with 2000 chips. Each round you win 95 or loose 100 chips.</li>
+           <li>You start with 2000 chips. The rake is 5%, so each round you win 95 or loose 100 chips.</li>
            <li>If your chip count is negative it means you are in debt to the Omertas...</li>
            <li>Never get in debt to the Omertas!</li>
           </ol>

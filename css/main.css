@@ -55,7 +55,7 @@ img {
     right: 0;
     padding: 3%;
     margin: auto;
-
+    overflow: auto;
     display: none;
 }
 
@@ -121,8 +121,7 @@ img {
 }
 
 .outcome {
-    min-height: 20px;
-    font-size: 1.35em;
+    font-size: 0.85em;
     font-weight: bold;
     text-align: center;
     padding-top: 2%;
@@ -162,6 +161,11 @@ img {
         min-height: 260px;
     }
 
+    .outcome {
+      min-height: 40px;
+      font-size: 1.25em;
+    }
+
     .rules {
         background-color: rgba(38, 29, 17, .9);
         width: 500px;
@@ -189,12 +193,18 @@ img {
         font-weight: bolder;
         text-align: center;
         min-height: 160px;
+        padding-left: 50px;
     }
 
     .hand img {
         resize: both;
         height: 150px;
         width: 75px;
+        margin-left: -55px;
+    }
+
+    .outcome {
+      margin: 0px;
     }
 
     .score h2 {
