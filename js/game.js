@@ -81,7 +81,7 @@ var ambience = new Audio("./sounds/118855__joedeshon__casino-ambiance-03.mp3");
 var win = new Audio("./sounds/162192__monotraum__coins.mp3");
 var lose = new Audio("./sounds/113988__kastenfrosch__verloren.mp3");
 
-var mute = false;
+var mute = true;
 Mute();
 
 
@@ -236,14 +236,7 @@ function Game() {
 };
 
 Game.prototype.deal = function() {
-  $('#playerHandWrap').removeClass('hide-hand');
-  $('#hit').removeClass('hide');
-  $('#stand').removeClass('hide');
-  $('#double').removeClass('hide');
-  $('#splitHand').addClass('hide');
-  $('#splitWrapOne').addClass('hide-hand');
-  $('#splitWrapTwo').addClass('hide-hand');
-  // player is not allowed to deal new cards in hand
+  this.toggleUI(['#double', '#hit', '#playerHandWrap', '#stand'], ['#splitHand', '#splitWrapOne', '#splitWrapTwo']);
   if (this.inPlay) {
     this.outcome = "You have forfeited your hand.";
     this.score -= 100;
@@ -275,10 +268,7 @@ Game.prototype.deal = function() {
   if (this.dealerHand.getValue() === 21) {
     this.outcome = "The dealer hits BlackJack, dealer wins. New Deal?";
     this.inPlay = false;
-    $('#double').addClass('hide');
-    $('#splitHand').addClass('hide');
-    $('#hit').addClass('hide');
-    $('#stand').addClass('hide');
+    this.toggleUI([], ['#double', '#hit', '#splitHand', '#stand']);
     lose.play();
   } else {
     this.outcome = "Do you Hit or Stand?";
@@ -293,10 +283,7 @@ Game.prototype.deal = function() {
 
 Game.prototype.doubleBet = function () {
   this.bet *= 2;
-  $('#double').addClass('hide');
-  $('#splitHand').addClass('hide');
-  $('#hit').addClass('hide');
-  $('#stand').addClass('hide');
+  this.toggleUI([], ['#double', '#hit', '#splitHand', '#stand']);
   this.updateView();
 };
 
@@ -312,14 +299,13 @@ Game.prototype.hit = function(hand) {
       this.outcome = "You have busted (" + handMap[hand].getValue() + "), dealer wins. New Deal?";
       this.inPlay = false;
       this.score -= this.bet;
-      $('#hit').addClass('hide');
-      $('#stand').addClass('hide');
+      this.toggleUI([], ['#hit', '#stand']);
       lose.play();
     } else {
       this.outcome = "New card dealt. Do you Hit or Stand?";
     }
   }
-  $('#double').addClass('hide');
+  this.toggleUI([], ['#double']);
   this.updateView();
 }
 
@@ -375,11 +361,8 @@ Game.prototype.stand = function() {
       }
     }
     this.inPlay = false;
-    $('#double').addClass('hide');
-    $('#hit').addClass('hide');
-    $('#stand').addClass('hide');
+    this.toggleUI([], ['#double', '#hit', '#stand']);
     this.updateView();
-
   }
 }
 
@@ -394,10 +377,6 @@ Game.prototype.rakeBet = function (bet) {
   * Split user hand
 */
 Game.prototype.splitHand = function () {
-  $('#splitHand').addClass('hide');
-  $('#double').addClass('hide');
-  console.log('dupa');
-
   this.handIsSplit = true;
   this.bet *= 2;
   // Create Hand no 1
@@ -406,12 +385,8 @@ Game.prototype.splitHand = function () {
   // Create Hand no 2
   this.splitHandTwo.addCard(this.playerHand.popCard());
   this.splitHandTwo.addCard(this.playingDeck.dealCard());
-  // Hide the main hand, show the split hands
-  $('#playerHandWrap').addClass('hide-hand');
-  $('#splitWrapOne').removeClass('hide-hand');
-  $('#splitWrapTwo').removeClass('hide-hand');
-  $('#hit').addClass('hide');
-
+  // Hide the main hand, show the split hands, hide inactive buttons
+  this.toggleUI(['#splitWrapOne', '#splitWrapTwo'], ['#playerHandWrap', '#hit', '#double', '#splitHand']);
   this.updateView();
 };
 
@@ -428,6 +403,20 @@ Game.prototype.updateView = function() {
   scoreLabel.innerHTML = this.score;
   currentBetLabel.innerHTML = this.bet;
 }
+
+/*
+* Show and hide UI elements with jQuery. Takes two arguments:
+* show - array of elements (ID's) to show,
+* hide - array of elements to hide.
+*/
+Game.prototype.toggleUI = function (show, hide) {
+  show.forEach(function(currentValue, index) {
+    $(currentValue).removeClass('hide');
+  });
+  hide.forEach(function(currentValue, index) {
+    $(currentValue).addClass('hide');
+  });
+};
 
 /**
  * Randomize array element order in-place.

@@ -64,6 +64,9 @@ img {
     color: #241603;
 }
 
+.card-overlap img {
+  margin-left: -55px;
+}
 
 .bet {
   background-color: #2b2a36;
