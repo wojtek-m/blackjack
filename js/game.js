@@ -3,48 +3,6 @@
  *
  */
 
-
-// jQuery
-$('#deal').on('click', function() {
-  blackjack.deal()
-});
-$('#double').on('click', function() {
-  blackjack.doubleBet();
-  blackjack.hit('playerHand');
-  blackjack.stand();
-});
-$('#hit').on('click', function() {
-  blackjack.hit('playerHand')
-});
-$('#hitSplitOne').on('click', function() {
-  blackjack.hit('splitHandOne')
-});
-$('#hitSplitTwo').on('click', function() {
-  blackjack.hit('splitHandTwo')
-});
-$('#stand').on('click', function() {
-  blackjack.stand()
-});
-$('#splitHand').on('click', function() {
-  blackjack.splitHand()
-});
-$('#rules').on('click', function() {
-  $('#rulesList').toggle()
-});
-$('#rulesList').on('click', function() {
-  $('#rulesList').toggle()
-});
-$('#mute').on('click', function() {
-  if (mute) {
-    mute = false;
-    $('#mute').html("<button type=\"button\" class=\"mute btn btn-default btn-sm\">Mute Sounds</button>");
-  } else {
-    mute = true;
-    $('#mute').html("<button type=\"button\" class=\"mute btn btn-default btn-sm\">Play Sounds</button>");
-  }
-  Mute();
-});
-
 // constants
 var SUITS = ['c', 'd', 'h', 's'];
 var RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
@@ -64,32 +22,10 @@ var VALUES = {
   K: 10
 };
 
-// create a game instance
-var blackjack = new Game();
-
-// select view elements
-var currentBetLabel = document.getElementById('currentBet');
-var playerHandLabel = document.getElementById('playerHand');
-var dealerHandLabel = document.getElementById('dealerHand');
-var outcomeLabel = document.getElementById('outcome');
-var scoreLabel = document.getElementById('score');
-var splitHandOneLabel = document.getElementById('splitHandOne');
-var splitHandTwoLabel = document.getElementById('splitHandTwo');
-
-// load sounds
-var ambience = new Audio("./sounds/118855__joedeshon__casino-ambiance-03.mp3");
-var win = new Audio("./sounds/162192__monotraum__coins.mp3");
-var lose = new Audio("./sounds/113988__kastenfrosch__verloren.mp3");
-
-var mute = true;
-Mute();
-
-
 
 /**
  * Card object - stores the the suit and value of the card.
  */
-
 function Card(suit, rank) {
   this.suit = suit;
   this.rank = rank;
@@ -110,45 +46,67 @@ Card.prototype.getSuit = function() {
 /**
  * Hand ojbect - stores the cards and the value of the hand.
  */
-
 function Hand() {
   this.hand = [];
 };
 
-Hand.prototype.addCard = function (card) {
-  this.hand.push(card);
+/*
+* Add cards to a hand. Takes two arguments: cards (array) and numberOfcards (int).
+*/
+Hand.prototype.addCards = function (cards, numberOfCards) {
+  while (numberOfCards > 0) {
+    this.hand.push(cards[numberOfCards - 1]);
+    numberOfCards -= 1;
+  }
 }
 
-Hand.prototype.popCard= function () {
-  return this.hand.pop();
+/*
+* Pop cards from a hand. Takes one arguments: number (int). Return poped cards (array);
+*/
+Hand.prototype.popCard = function (number) {
+  var cardArr = [];
+  while (number > 0) {
+    cardArr.push(this.hand.pop());
+    number -= 1;
+  }
+  return cardArr;
 };
 
+/*
+*  Get value of a hand. Count aces as 11 if the value is below 21 and as
+* 1 it the total value is higher.
+*/
 Hand.prototype.getValue = function() {
-  // Count aces as 1, if the hand has and ace,
-  // then add 10 to value if it doesn't bust the hand
-  var hand_value = 0;
-  var hand_with_A = false;
+  var handValue = 0;
 
-  // Sum the cards and set the A flag to true
+  // Sum the cards
   for (var i = 0; i < this.hand.length; i++) {
     var rank = this.hand[i].getRank();
-    hand_value += VALUES[rank];
-    if (rank === 'A') {
-      hand_with_A = true;
-    }
+    handValue += VALUES[rank];
   }
 
   // If hand without an A, return, else add 10 or keep the 1 value
-  if (!hand_with_A) {
-    return hand_value;
+  if (!this.isHandWithAce(this.hand)) {
+    return handValue;
   } else {
-    if (hand_value + 10 <= 21) {
-      return hand_value + 10;
+    if (handValue + 10 <= 21) {
+      return handValue + 10;
     } else {
-      return hand_value;
+      return handValue;
     }
   }
 }
+
+Hand.prototype.isHandWithAce = function (hand) {
+  var handWithA = false;
+  for (var i = 0; i < hand.length; i++) {
+    var rank = hand[i].getRank();
+    if (rank === 'A') {
+      handWithA = true;
+    }
+  }
+  return handWithA;
+};
 
 Hand.prototype.printHand = function() {
   var hand_printout = "";
@@ -212,10 +170,17 @@ Deck.prototype.shuffleDeck = function() {
   return shuffleArray(this.deck);
 }
 
-// Deal a card from the deck
-Deck.prototype.dealCard = function() {
-  var card_to_deal = this.deck.pop();
-  return card_to_deal;
+/*
+* Deal a given number of cards from the deck. Takes number of cards to deal
+* as an argument (int) and returns number * cards (array).
+*/
+Deck.prototype.dealCard = function(number) {
+  var dealArr = [];
+  while (number > 0) {
+    dealArr.push(this.deck.pop());
+    number -= 1;
+  }
+  return dealArr;
 }
 
 /**
@@ -236,7 +201,7 @@ function Game() {
 };
 
 Game.prototype.deal = function() {
-  this.toggleUI(['#double', '#hit', '#playerHandWrap', '#stand'], ['#splitHand', '#splitWrapOne', '#splitWrapTwo']);
+  ctrl.toggleUI(['#double', '#hit', '#playerHandWrap', '#stand'], ['#splitHand', '#splitWrapOne', '#splitWrapTwo']);
   if (this.inPlay) {
     this.outcome = "You have forfeited your hand.";
     this.score -= 100;
@@ -246,29 +211,16 @@ Game.prototype.deal = function() {
     this.outcome = " ";
   }
 
-  // create instance of hands and deck, shuffle deck
-  this.inPlay = true;
-  this.playingDeck = new Deck();
-  this.playerHand = new Hand();
-  this.dealerHand = new Hand();
-  this.handIsSplit = false;
-  this.splitHandOne = new Hand();
-  this.splitHandTwo = new Hand();
-  this.playingDeck.shuffleDeck();
-  this.bet = 100;
+  this.generateNewBoard();
 
   // deal the first 2 cards for player and dealer
-  var rounds_dealt = 0;
-  while (rounds_dealt < 2) {
-    this.playerHand.addCard(this.playingDeck.dealCard())
-    this.dealerHand.addCard(this.playingDeck.dealCard())
-    rounds_dealt += 1;
-  }
+  this.playerHand.addCards(this.playingDeck.dealCard(2), 2);
+  this.dealerHand.addCards(this.playingDeck.dealCard(2), 2);
 
   if (this.dealerHand.getValue() === 21) {
     this.outcome = "The dealer hits BlackJack, dealer wins. New Deal?";
     this.inPlay = false;
-    this.toggleUI([], ['#double', '#hit', '#splitHand', '#stand']);
+    ctrl.toggleUI([], ['#double', '#hit', '#splitHand', '#stand']);
     lose.play();
   } else {
     this.outcome = "Do you Hit or Stand?";
@@ -278,13 +230,13 @@ Game.prototype.deal = function() {
       this.outcome = "Do you Hit, Split or Stand?";
     }
   }
-  this.updateView();
+  ctrl.updateView();
 }
 
 Game.prototype.doubleBet = function () {
   this.bet *= 2;
-  this.toggleUI([], ['#double', '#hit', '#splitHand', '#stand']);
-  this.updateView();
+  ctrl.toggleUI([], ['#double', '#hit', '#splitHand', '#stand']);
+  ctrl.updateView();
 };
 
 Game.prototype.hit = function(hand) {
@@ -293,27 +245,27 @@ Game.prototype.hit = function(hand) {
                 splitHandTwo:this.splitHandTwo };
   if (this.inPlay && !(handMap[hand].getValue() > 21)) {
     // deal another card
-    handMap[hand].addCard(this.playingDeck.dealCard())
+    handMap[hand].addCards(this.playingDeck.dealCard(1), 1);
       // If players hand value is over 21, player busts
     if (handMap[hand].getValue() > 21 && !this.handIsSplit) {
       this.outcome = "You have busted (" + handMap[hand].getValue() + "), dealer wins. New Deal?";
       this.inPlay = false;
       this.score -= this.bet;
-      this.toggleUI([], ['#hit', '#stand']);
+      ctrl.toggleUI([], ['#hit', '#stand']);
       lose.play();
     } else {
       this.outcome = "New card dealt. Do you Hit or Stand?";
     }
   }
-  this.toggleUI([], ['#double']);
-  this.updateView();
+  ctrl.toggleUI([], ['#double']);
+  ctrl.updateView();
 }
 
 Game.prototype.stand = function() {
   if (this.inPlay) {
     // dealer only draws when below 17 points
     while (this.dealerHand.getValue() < 17) {
-      this.dealerHand.addCard(this.playingDeck.dealCard());
+      this.dealerHand.addCards(this.playingDeck.dealCard(1), 1);
     }
 
     // if dealers hand value is over 21, dealer busts
@@ -325,7 +277,7 @@ Game.prototype.stand = function() {
     // else if dealer did not bust and hand is split
   } else if (this.handIsSplit) {
       var won = 0;
-      // determin if player hands are winning
+      // determine if player hands are winning
       if (this.dealerHand.getValue() < this.splitHandOne.getValue() && !(this.splitHandOne.getValue() > 21)) {
         won += 1;
       }
@@ -361,8 +313,8 @@ Game.prototype.stand = function() {
       }
     }
     this.inPlay = false;
-    this.toggleUI([], ['#double', '#hit', '#stand']);
-    this.updateView();
+    ctrl.toggleUI([], ['#double', '#hit', '#stand']);
+    ctrl.updateView();
   }
 }
 
@@ -380,42 +332,29 @@ Game.prototype.splitHand = function () {
   this.handIsSplit = true;
   this.bet *= 2;
   // Create Hand no 1
-  this.splitHandOne.addCard(this.playerHand.popCard());
-  this.splitHandOne.addCard(this.playingDeck.dealCard());
+  this.splitHandOne.addCards(this.playerHand.popCard(1), 1);
+  this.splitHandOne.addCards(this.playingDeck.dealCard(1), 1);
   // Create Hand no 2
-  this.splitHandTwo.addCard(this.playerHand.popCard());
-  this.splitHandTwo.addCard(this.playingDeck.dealCard());
+  this.splitHandTwo.addCards(this.playerHand.popCard(1), 1);
+  this.splitHandTwo.addCards(this.playingDeck.dealCard(1), 1);
   // Hide the main hand, show the split hands, hide inactive buttons
-  this.toggleUI(['#splitWrapOne', '#splitWrapTwo'], ['#playerHandWrap', '#hit', '#double', '#splitHand']);
-  this.updateView();
+  ctrl.toggleUI(['#splitWrapOne', '#splitWrapTwo'], ['#playerHandWrap', '#hit', '#double', '#splitHand']);
+  ctrl.updateView();
 };
 
-Game.prototype.updateView = function() {
-  playerHandLabel.innerHTML = this.playerHand.printHand();
-  splitHandOneLabel.innerHTML = this.splitHandOne.printHand();
-  splitHandTwoLabel.innerHTML = this.splitHandTwo.printHand();
-  if (this.inPlay) {
-    dealerHandLabel.innerHTML = this.dealerHand.printDealerHand();
-  } else {
-    dealerHandLabel.innerHTML = this.dealerHand.printHand();
-  }
-  outcomeLabel.innerHTML = this.outcome;
-  scoreLabel.innerHTML = this.score;
-  currentBetLabel.innerHTML = this.bet;
-}
-
 /*
-* Show and hide UI elements with jQuery. Takes two arguments:
-* show - array of elements (ID's) to show,
-* hide - array of elements to hide.
+* Generate new instance of hands and deck, shuffle deck
 */
-Game.prototype.toggleUI = function (show, hide) {
-  show.forEach(function(currentValue, index) {
-    $(currentValue).removeClass('hide');
-  });
-  hide.forEach(function(currentValue, index) {
-    $(currentValue).addClass('hide');
-  });
+Game.prototype.generateNewBoard = function () {
+  this.inPlay = true;
+  this.playingDeck = new Deck();
+  this.playerHand = new Hand();
+  this.dealerHand = new Hand();
+  this.handIsSplit = false;
+  this.splitHandOne = new Hand();
+  this.splitHandTwo = new Hand();
+  this.playingDeck.shuffleDeck();
+  this.bet = 100;
 };
 
 /**
