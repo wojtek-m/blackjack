@@ -37,8 +37,11 @@
           <div id="dealerHand" class="hand"><img src="img/XX.jpg"><img src="img/XX.jpg"></div>
         </div>
         <!-- Text feedback for the user -->
-        <div id="outcome" class="col-xs-12 col-md-9 feedback outcome">Click the Deal button to begin!</div>
-        <div class="col-xs-12 col-md-3 bet outcome">Current bet: <span id="currentBet"> no bet </span></div>
+        <div id="outcome" class="col-xs-12 feedback outcome"><span>Click the Deal button to begin!</span></div>
+        <div class="col-xs-4 hand-value outcome">Your hand: <span id="playerHandValue"></span></div>
+        <div class="col-xs-4 bet outcome">Current bet: <span id="currentBet"> no bet </span></div>
+        <div class="col-xs-4 hand-value outcome">Dealer's hand: <span id="dealerHandValue"></span></div>
+
         <!-- Buttons -->
         <div class="buttons col-xs-12">
             <button type="button" class="btn btn-double btn-lg hide" id="double">Double</button>

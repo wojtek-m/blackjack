@@ -85,16 +85,13 @@ Hand.prototype.getValue = function() {
     handValue += VALUES[rank];
   }
 
-  // If hand without an A, return, else add 10 or keep the 1 value
-  if (!this.isHandWithAce(this.hand)) {
-    return handValue;
-  } else {
+  // If hand with an A, add 10 in not busting the hand
+  if (this.isHandWithAce(this.hand)) {
     if (handValue + 10 <= 21) {
-      return handValue + 10;
-    } else {
-      return handValue;
+      handValue += 10;
     }
   }
+  return handValue;
 }
 
 Hand.prototype.isHandWithAce = function (hand) {
@@ -203,31 +200,28 @@ function Game() {
 Game.prototype.deal = function() {
   ctrl.toggleUI(['#double', '#hit', '#playerHandWrap', '#stand'], ['#splitHand', '#splitWrapOne', '#splitWrapTwo']);
   if (this.inPlay) {
-    this.outcome = "You have forfeited your hand.";
+    this.outcome = textFeedback.loseForfeit1;
     this.score -= 100;
     this.inPlay = false;
     lose.play();
-  } else {
-    this.outcome = " ";
   }
-
   this.generateNewBoard();
-
   // deal the first 2 cards for player and dealer
   this.playerHand.addCards(this.playingDeck.dealCard(2), 2);
   this.dealerHand.addCards(this.playingDeck.dealCard(2), 2);
 
   if (this.dealerHand.getValue() === 21) {
-    this.outcome = "The dealer hits BlackJack, dealer wins. New Deal?";
+    this.outcome = textFeedback.loseBlackjack1;
     this.inPlay = false;
     ctrl.toggleUI([], ['#double', '#hit', '#splitHand', '#stand']);
     lose.play();
   } else {
-    this.outcome = "Do you Hit or Stand?";
+    this.outcome = textFeedback.hitOrStand1;
     // check if the hand is a pair and allow split
     if (this.playerHand.pairCheck()) {
-      $('#splitHand').removeClass('hide');
-      this.outcome = "Do you Hit, Split or Stand?";
+      ctrl.toggleUI(['#splitHand'], []);
+      //$('#splitHand').removeClass('hide');
+      this.outcome = textFeedback.split1;
     }
   }
   ctrl.updateView();
@@ -248,13 +242,13 @@ Game.prototype.hit = function(hand) {
     handMap[hand].addCards(this.playingDeck.dealCard(1), 1);
       // If players hand value is over 21, player busts
     if (handMap[hand].getValue() > 21 && !this.handIsSplit) {
-      this.outcome = "You have busted (" + handMap[hand].getValue() + "), dealer wins. New Deal?";
+      this.outcome = textFeedback.busted1;
       this.inPlay = false;
       this.score -= this.bet;
       ctrl.toggleUI([], ['#hit', '#stand']);
       lose.play();
     } else {
-      this.outcome = "New card dealt. Do you Hit or Stand?";
+      this.outcome = textFeedback.newCard1;
     }
   }
   ctrl.toggleUI([], ['#double']);
@@ -270,7 +264,7 @@ Game.prototype.stand = function() {
 
     // if dealers hand value is over 21, dealer busts
     if (this.dealerHand.getValue() > 21) {
-      this.outcome = "Dealer have busted (" + this.dealerHand.getValue() + "), you win! New Deal?";
+      this.outcome = textFeedback.win2;
       this.score += this.rakeBet(this.bet);
       win.play();
       Mute();
@@ -286,15 +280,15 @@ Game.prototype.stand = function() {
       }
       // Set the user feedback accordingly to results
       if (won === 2) {
-        this.outcome = "Dealer (" + this.dealerHand.getValue() + ") looses with both your hands (" + this.splitHandOne.getValue() + ", " + this.splitHandTwo.getValue() + "). New Deal?";
+        this.outcome = textFeedback.doubleWin1;
         this.score += this.rakeBet(this.bet);
         win.play();
       } else if (won === 1) {
-        this.outcome = "Dealer (" + this.dealerHand.getValue() + ") looses with one of your hands (" + this.splitHandOne.getValue() + ", " + this.splitHandTwo.getValue() + "). New Deal?";
+        this.outcome = textFeedback.tie1;
         this.score += (this.rakeBet(this.bet))/2;
         win.play();
       } else {
-        this.outcome = "Dealer (" + this.dealerHand.getValue() + ") wins with both your hands (" + this.splitHandOne.getValue() + ", " + this.splitHandTwo.getValue() + "). New Deal?";
+        this.outcome = textFeedback.doubleLoose1;
         this.score -= this.bet;
         lose.play();
       }
@@ -302,12 +296,12 @@ Game.prototype.stand = function() {
     } else {
       // if dealers hand is equal or higher to players hand, dealer wins
       if (this.dealerHand.getValue() >= this.playerHand.getValue()) {
-        this.outcome = "Dealer (" + this.dealerHand.getValue() + ") wins with your hand (" + this.playerHand.getValue() + "). New Deal?";
+        this.outcome = textFeedback.lose1;
         this.score -= this.bet;
         lose.play();
         // else the player wins
       } else {
-        this.outcome = "You (" + this.playerHand.getValue() + ") win with dealer's hand (" + this.dealerHand.getValue() + ")! New Deal?";
+        this.outcome = textFeedback.win1;
         this.score += this.rakeBet(this.bet);
         win.play();
       }

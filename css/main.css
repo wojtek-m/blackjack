@@ -102,6 +102,10 @@ img {
     margin-top: 2%;
 }
 
+.hand-value {
+  background-color: rgb(108, 108, 108);
+}
+
 .hide {
   display: none;
 }
@@ -130,7 +134,7 @@ img {
     padding-top: 2%;
     padding-bottom: 2%;
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 
 .score {
