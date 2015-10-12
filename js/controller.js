@@ -25,7 +25,7 @@ var ambience = new Audio("./sounds/118855__joedeshon__casino-ambiance-03.mp3");
 var win = new Audio("./sounds/162192__monotraum__coins.mp3");
 var lose = new Audio("./sounds/113988__kastenfrosch__verloren.mp3");
 
-var mute = true;
+var mute = false;
 Mute();
 
 
@@ -99,7 +99,8 @@ Controller.prototype.updateView = function() {
   } else {
     playerHandValueLabel.innerHTML = blackjack.playerHand.getValue();
   }
-  // only display dealer hand value if hand not in play
+  // reset dealer hand value and only display it when hand not in play
+  dealerHandValueLabel.innerHTML = '';
   if (!blackjack.inPlay) {
     dealerHandValueLabel.innerHTML = blackjack.dealerHand.getValue();
   }

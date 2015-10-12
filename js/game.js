@@ -204,27 +204,28 @@ Game.prototype.deal = function() {
     this.score -= 100;
     this.inPlay = false;
     lose.play();
-  }
-  this.generateNewBoard();
-  // deal the first 2 cards for player and dealer
-  this.playerHand.addCards(this.playingDeck.dealCard(2), 2);
-  this.dealerHand.addCards(this.playingDeck.dealCard(2), 2);
-
-  if (this.dealerHand.getValue() === 21) {
-    this.outcome = textFeedback.loseBlackjack1;
-    this.inPlay = false;
-    ctrl.toggleUI([], ['#double', '#hit', '#splitHand', '#stand']);
-    lose.play();
   } else {
-    this.outcome = textFeedback.hitOrStand1;
-    // check if the hand is a pair and allow split
-    if (this.playerHand.pairCheck()) {
-      ctrl.toggleUI(['#splitHand'], []);
-      //$('#splitHand').removeClass('hide');
-      this.outcome = textFeedback.split1;
+    this.generateNewBoard();
+    // deal the first 2 cards for player and dealer
+    this.playerHand.addCards(this.playingDeck.dealCard(2), 2);
+    this.dealerHand.addCards(this.playingDeck.dealCard(2), 2);
+
+    if (this.dealerHand.getValue() === 21) {
+      this.outcome = textFeedback.loseBlackjack1;
+      this.inPlay = false;
+      ctrl.toggleUI([], ['#double', '#hit', '#splitHand', '#stand']);
+      lose.play();
+    } else {
+      this.outcome = textFeedback.hitOrStand1;
+      // check if the hand is a pair and allow split
+      if (this.playerHand.pairCheck()) {
+        ctrl.toggleUI(['#splitHand'], []);
+        //$('#splitHand').removeClass('hide');
+        this.outcome = textFeedback.split1;
+      }
     }
   }
-  ctrl.updateView();
+    ctrl.updateView();
 }
 
 Game.prototype.doubleBet = function () {
