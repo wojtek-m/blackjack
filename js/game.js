@@ -109,11 +109,11 @@ Hand.prototype.printHand = function() {
   var hand_printout = "";
   if (this.hand.length > 3) {
     for (var i = 0; i < this.hand.length; i++) {
-      hand_printout = hand_printout + "<img style=\"margin-left:-55px;" + i + "\" src=\"img/" + this.hand[i].rank + this.hand[i].suit + ".jpg\">";
+      hand_printout = hand_printout + "<img style=\"margin-left:-55px;" + i + "\" src=\"img/" + this.hand[i].rank + this.hand[i].suit + ".jpg\" alt=\"" + this.hand[i].rank + this.hand[i].suit + "\">";
     }
   } else {
     for (var i = 0; i < this.hand.length; i++) {
-      hand_printout = hand_printout + "<img src=\"img/" + this.hand[i].rank + this.hand[i].suit + ".jpg\">";
+      hand_printout = hand_printout + "<img src=\"img/" + this.hand[i].rank + this.hand[i].suit + ".jpg\" alt=\"" + this.hand[i].rank + this.hand[i].suit + "\">";
     }
   }
   return hand_printout;
@@ -123,14 +123,14 @@ Hand.prototype.printDealerHand = function() {
   var hand_printout = "";
   if (this.hand.length > 4) {
     for (var i = 0; i < this.hand.length - 1; i++) {
-      hand_printout = hand_printout + "<img style=\"margin-left:-55px;" + i + "\" src=\"img/XX.jpg\">";
+      hand_printout = hand_printout + "<img style=\"margin-left:-55px;" + i + "\" src=\"img/XX.jpg\" alt=\"Card back\">";
     }
-    hand_printout = hand_printout + "<img style=\"margin-left:-55px;" + i + "\" src=\"img/" + this.hand[this.hand.length - 1].rank + this.hand[this.hand.length - 1].suit + ".jpg\">";
+    hand_printout = hand_printout + "<img style=\"margin-left:-55px;" + i + "\" src=\"img/" + this.hand[this.hand.length - 1].rank + this.hand[this.hand.length - 1].suit + ".jpg\" alt=\"" + this.hand[this.hand.length - 1].rank + this.hand[this.hand.length - 1].suit + "\">";
   } else {
     for (var i = 0; i < this.hand.length - 1; i++) {
-      hand_printout = hand_printout + "<img src=\"img/XX.jpg\">";
+      hand_printout = hand_printout + "<img src=\"img/XX.jpg\" alt=\"Card back\">";
     }
-    hand_printout = hand_printout + "<img src=\"img/" + this.hand[this.hand.length - 1].rank + this.hand[this.hand.length - 1].suit + ".jpg\">";
+    hand_printout = hand_printout + "<img src=\"img/" + this.hand[this.hand.length - 1].rank + this.hand[this.hand.length - 1].suit + ".jpg\" alt=\"" + this.hand[this.hand.length - 1].rank + this.hand[this.hand.length - 1].suit + "\">";
   }
   return hand_printout;
 }

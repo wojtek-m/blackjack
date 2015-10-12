@@ -4,6 +4,12 @@
    Author's custom styles
    ========================================================================== */
 
+body {
+   background: url("../img/fallout-bg-1.jpg") bottom no-repeat ;
+   background-color: #806949;
+   color: #EDEAE6;
+}
+
 footer {
     background: #D49674;
     width:100%;
@@ -15,7 +21,6 @@ footer {
     text-align: center;
     padding: 1%;
     color: #522C18;
-
 }
 
 footer a {
@@ -27,14 +32,28 @@ footer a:hover {
     font-weight: bold;
 }
 
-body {
-    background: url("../img/fallout-bg-1s.jpg") center no-repeat ;
-    background-color: #806949;
-    color: #EDEAE6;
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.45em;
+}
+
+h3, h4 {
+  font-size: 1.1em;
+}
+
+h5, h6 {
+  font-size: 0.75em;
 }
 
 img {
     margin: 2px;
+}
+
+main {
+  min-height: 120%;
 }
 
 #mute {
@@ -45,6 +64,10 @@ img {
 
 #playerHand {
   text-align: center;
+}
+
+#playerHandWrap {
+  padding-bottom: 20px;
 }
 
 #rulesList {
@@ -62,6 +85,10 @@ img {
 #score {
     font-weight: bolder;
     color: #241603;
+}
+
+#splitWrapOne, #splitWrapTwo {
+  padding-bottom: 20px;
 }
 
 .card-overlap img {
